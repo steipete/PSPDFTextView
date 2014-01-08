@@ -10,9 +10,11 @@ What's fixed in this subclass?
 *  Typing will also consider `contentInset` and will update the scroll position accordingly.
 
 UITextView:
+
 [![UITextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/broken.gif)](#broken)
 
 PSPDFTextView:
+
 [![PSPDFTextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/fixed.gif)](#fixed)
 
 Read more in my blog post: [http://petersteinberger.com](http://petersteinberger.com)
