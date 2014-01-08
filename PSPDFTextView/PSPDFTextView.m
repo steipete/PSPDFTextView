@@ -160,6 +160,8 @@
     id delegate = self.realDelegate;
     if ([delegate respondsToSelector:invocation.selector]) {
         [invocation invokeWithTarget:delegate];
+    }else {
+        [super forwardInvocation:invocation];
     }
 }
 
