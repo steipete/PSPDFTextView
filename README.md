@@ -11,11 +11,11 @@ What's fixed?
 
 UITextView:
 
-[![UITextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/broken.gif)](#broken)
+![UITextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/broken.gif)
 
 PSPDFTextView:
 
-[![PSPDFTextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/fixed.gif)](#fixed)
+![PSPDFTextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/fixed.gif)
 
 Read more in my blog post: [http://petersteinberger.com](http://petersteinberger.com)
 
