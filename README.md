@@ -1,9 +1,9 @@
 PSPDFTextView
 =============
 
-A subclass that fixes the most glaring problems from iOS 7 and 7.1.
+A subclass of `UITextView` that fixes the most glaring problems from iOS 7 and 7.1.
 
-What's fixed in this subclass?
+What's fixed?
 
 *  When adding a newline, `UITextView` will now properly scroll down. Previously, you needed to add at least one character for this to happen.
 *  Scrolling to the caret position works considering `contentInset`. By default, `UITextView` completely ignores this.
@@ -21,4 +21,4 @@ Read more in my blog post: [http://petersteinberger.com](http://petersteinberger
 
 ## License
 
-Taken from the commercial [PSPDFKit](http://pspdfkit.com). This part has been relicensed under the MIT license.
+Taken from the commercial [PSPDFKit](http://pspdfkit.com). This class has been relicensed under the MIT license.
