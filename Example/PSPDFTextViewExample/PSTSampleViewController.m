@@ -10,7 +10,7 @@
 #import "PSPDFTextView.h"
 #include <tgmath.h>
 
-@interface PSTSampleViewController () {
+@interface PSTSampleViewController () <UITextViewDelegate> {
     CGRect _keyboardRect;
     BOOL _keyboardVisible;
 }
@@ -39,6 +39,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
 
     PSPDFTextView *textView = [[PSPDFTextView alloc] initWithFrame:self.view.bounds];
+    textView.delegate = self;
     textView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     textView.font = [UIFont systemFontOfSize:20.f];
     textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -90,6 +91,17 @@
 
 - (void)dismissKeyboard {
     [self.view endEditing:YES];
+}
+
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView {
+    NSLog(@"Called %@", NSStringFromSelector(_cmd));
+    return YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)aTextView {
+    NSLog(@"Called %@", NSStringFromSelector(_cmd));
+    return YES;
 }
 
 @end

@@ -160,13 +160,9 @@
     return [super methodSignatureForSelector:s] ?: [(id)self.realDelegate methodSignatureForSelector:s];
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation {
+- (id)forwardingTargetForSelector:(SEL)s {
     id delegate = self.realDelegate;
-    if ([delegate respondsToSelector:invocation.selector]) {
-        [invocation invokeWithTarget:delegate];
-    }else {
-        [super forwardInvocation:invocation];
-    }
+    return [delegate respondsToSelector:s] ? delegate : [super forwardingTargetForSelector:s];
 }
 
 @end
