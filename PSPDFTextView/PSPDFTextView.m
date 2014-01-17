@@ -38,8 +38,12 @@
 
 - (void)setDelegate:(id<UITextViewDelegate>)delegate {
     if (PSPDFRequiresTextViewWorkarounds()) {
-        [super setDelegate:delegate ? self : nil];
+        // UIScrollView delegate keeps some flags that mark whether the delegate implements some methods (like scrollViewDidScroll:)
+        // setting *the same* delegate doesn't recheck the flags, so it's better to simply nil the previous delegate out
+        // we have to setup the realDelegate at first, since the flag check happens in setter
+        [super setDelegate:nil];
         self.realDelegate = delegate != self ? delegate : nil;
+        [super setDelegate:delegate ? self : nil];
     }else {
         [super setDelegate:delegate];
     }
