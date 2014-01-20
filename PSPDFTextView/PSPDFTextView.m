@@ -11,7 +11,7 @@
 #define kCFCoreFoundationVersionNumber_iOS_7_0 847.2
 #endif
 
-// Set this to YES of you only support iOS 7.
+// Set this to YES if you only support iOS 7.
 #define PSPDFRequiresTextViewWorkarounds() (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_7_0)
 
 @interface PSPDFTextView () <UITextViewDelegate>
@@ -95,7 +95,7 @@
         }else {
             // Whenever the user enters text, see if we need to scroll to keep the caret on screen.
             // If it's not a newline, we don't need to add a delay to scroll.
-            // We don't aniamte since this sometimes ends up on the wrong position then.
+            // We don't animate since this sometimes ends up on the wrong position then.
             [self scrollToVisibleCaret];
         }
     }
