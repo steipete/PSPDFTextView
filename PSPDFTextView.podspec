@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Peter Steinberger, PSPDFKit GmbH" => "steipete@gmail.com" }
   s.ios.deployment_target = '6.0'
-  s.source       = { :git => "https://github.com/steipete/PSPDFTextView.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/steipete/PSPDFTextView.git", :tag => "#{s.version}" }
   s.source_files  = 'PSPDFTextView/*.{h,m,c}'
   s.requires_arc = true;
 end
