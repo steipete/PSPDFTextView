@@ -77,16 +77,6 @@
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - UITextInput
-
-- (void)setSelectedTextRange:(UITextRange *)selectedTextRange
-{
-    _settingSelection = YES;
-    [super setSelectedTextRange:selectedTextRange];
-    _settingSelection = NO;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Caret Scrolling
 
 - (void)scrollRectToVisibleConsideringInsets:(CGRect)rect animated:(BOOL)animated {
