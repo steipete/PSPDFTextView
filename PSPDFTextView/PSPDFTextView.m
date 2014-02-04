@@ -11,7 +11,7 @@
 #define kCFCoreFoundationVersionNumber_iOS_7_0 847.2
 #endif
 
-// Set this to YES of you only support iOS 7.
+// Set this to YES if you only support iOS 7.
 #define PSPDFRequiresTextViewWorkarounds() (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_7_0)
 
 @interface PSPDFTextView () <UITextViewDelegate>
@@ -41,8 +41,12 @@
 
 - (void)setDelegate:(id<UITextViewDelegate>)delegate {
     if (PSPDFRequiresTextViewWorkarounds()) {
-        [super setDelegate:delegate ? self : nil];
+        // UIScrollView delegate keeps some flags that mark whether the delegate implements some methods (like scrollViewDidScroll:)
+        // setting *the same* delegate doesn't recheck the flags, so it's better to simply nil the previous delegate out
+        // we have to setup the realDelegate at first, since the flag check happens in setter
+        [super setDelegate:nil];
         self.realDelegate = delegate != self ? delegate : nil;
+        [super setDelegate:delegate ? self : nil];
     }else {
         [super setDelegate:delegate];
     }
@@ -128,7 +132,7 @@
         }else {
             // Whenever the user enters text, see if we need to scroll to keep the caret on screen.
             // If it's not a newline, we don't need to add a delay to scroll.
-            // We don't aniamte since this sometimes ends up on the wrong position then.
+            // We don't animate since this sometimes ends up on the wrong position then.
             [self scrollToVisibleCaret];
         }
     }
@@ -195,13 +199,9 @@
     return [super methodSignatureForSelector:s] ?: [(id)self.realDelegate methodSignatureForSelector:s];
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation {
+- (id)forwardingTargetForSelector:(SEL)s {
     id delegate = self.realDelegate;
-    if ([delegate respondsToSelector:invocation.selector]) {
-        [invocation invokeWithTarget:delegate];
-    }else {
-        [super forwardInvocation:invocation];
-    }
+    return [delegate respondsToSelector:s] ? delegate : [super forwardingTargetForSelector:s];
 }
 
 @end
