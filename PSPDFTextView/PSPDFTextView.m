@@ -198,10 +198,6 @@
     return [super respondsToSelector:s] || [self.realDelegate respondsToSelector:s];
 }
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)s {
-    return [super methodSignatureForSelector:s] ?: [(id)self.realDelegate methodSignatureForSelector:s];
-}
-
 - (id)forwardingTargetForSelector:(SEL)s {
     id delegate = self.realDelegate;
     return [delegate respondsToSelector:s] ? delegate : [super forwardingTargetForSelector:s];
