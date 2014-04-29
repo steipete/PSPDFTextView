@@ -18,7 +18,10 @@
 @property (nonatomic, weak) id<UITextViewDelegate> realDelegate;
 @end
 
-@implementation PSPDFTextView
+@implementation PSPDFTextView {
+    BOOL _settingText;
+    BOOL _settingSelection;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSObject
@@ -56,6 +59,30 @@
     }else {
         [super setDelegate:delegate];
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - UITextView
+
+- (void)setText:(NSString *)text
+{
+    _settingText = YES;
+    [super setText:text];
+    _settingText = NO;
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    _settingText = YES;
+    [super setAttributedText:attributedText];
+    _settingText = NO;
+}
+
+- (void)setSelectedRange:(NSRange)selectedRange
+{
+    _settingSelection = YES;
+    [super setSelectedRange:selectedRange];
+    _settingSelection = NO;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +159,10 @@
         [delegate textViewDidChangeSelection:textView];
     }
 
-    // Ensure caret stays visible when we change the caret position (e.g. via keyboard)
-    [self scrollToVisibleCaretAnimated:YES];
+    if (!_settingText && !_settingSelection) {
+        // Ensure caret stays visible when we change the caret position (e.g. via keyboard)
+        [self scrollToVisibleCaretAnimated:YES];
+    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
