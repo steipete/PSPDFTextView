@@ -22,4 +22,5 @@ Read more in my blog post: [http://petersteinberger.com/blog/2014/fixing-uitextv
 
 ## License
 
-Taken from the commercial [PSPDFKit - a framework for displaying and annotating PDFs in your iOS apps.](http://pspdfkit.com) This class has been relicensed under the MIT license.
+Taken from the commercial [PSPDFKit - a framework for displaying and annotating PDFs in your iOS apps.](http://pspdfkit.com)
+This class has been relicensed under the MIT license.
