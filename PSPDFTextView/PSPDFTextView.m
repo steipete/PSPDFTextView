@@ -91,14 +91,18 @@
 - (void)scrollRectToVisibleConsideringInsets:(CGRect)rect animated:(BOOL)animated {
     if (PSPDFRequiresTextViewWorkarounds()) {
         // Don't scroll if rect is currently visible.
-        CGRect visibleRect = UIEdgeInsetsInsetRect(self.bounds, self.contentInset);
+        UIEdgeInsets insets = UIEdgeInsetsMake(self.contentInset.top + self.textContainerInset.top,
+                                               self.contentInset.left + self.textContainerInset.left,
+                                               self.contentInset.bottom + self.textContainerInset.bottom,
+                                               self.contentInset.right + self.textContainerInset.right);
+        CGRect visibleRect = UIEdgeInsetsInsetRect(self.bounds, insets);
         if (!CGRectContainsRect(visibleRect, rect)) {
             // Calculate new content offset.
             CGPoint contentOffset = self.contentOffset;
             if (CGRectGetMinY(rect) < CGRectGetMinY(visibleRect)) { // scroll up
-                contentOffset.y = CGRectGetMinY(rect) - self.contentInset.top;
+                contentOffset.y = CGRectGetMinY(rect) - insets.top;
             }else { // scroll down
-                contentOffset.y = CGRectGetMaxY(rect) + self.contentInset.bottom - CGRectGetHeight(self.bounds);
+                contentOffset.y = CGRectGetMaxY(rect) + insets.bottom - CGRectGetHeight(self.bounds);
             }
             [self setContentOffset:contentOffset animated:animated];
         }
