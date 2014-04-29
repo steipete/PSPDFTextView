@@ -64,22 +64,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - UITextView
 
-- (void)setText:(NSString *)text
-{
+- (void)setText:(NSString *)text {
     _settingText = YES;
     [super setText:text];
     _settingText = NO;
 }
 
-- (void)setAttributedText:(NSAttributedString *)attributedText
-{
+- (void)setAttributedText:(NSAttributedString *)attributedText {
     _settingText = YES;
     [super setAttributedText:attributedText];
     _settingText = NO;
 }
 
-- (void)setSelectedRange:(NSRange)selectedRange
-{
+- (void)setSelectedRange:(NSRange)selectedRange {
     _settingSelection = YES;
     [super setSelectedRange:selectedRange];
     _settingSelection = NO;
