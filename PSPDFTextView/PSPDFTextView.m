@@ -25,11 +25,20 @@
 
 - (id)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer {
     if (self = [super initWithFrame:frame textContainer:textContainer]) {
-        if (PSPDFRequiresTextViewWorkarounds()) {
-            [super setDelegate:self];
-        }
+        [self customInit];
     }
     return self;
+}
+
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    [self customInit];
+}
+
+- (void)customInit{
+    if (PSPDFRequiresTextViewWorkarounds()) {
+        [super setDelegate:self];
+    }
 }
 
 - (void)dealloc {
