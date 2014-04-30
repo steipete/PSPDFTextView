@@ -10,4 +10,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/steipete/PSPDFTextView.git", :tag => "#{s.version}" }
   s.source_files  = 'PSPDFTextView/*.{h,m,c}'
   s.requires_arc = true;
+  s.social_media_url = "https://twitter.com/steipete"
 end
