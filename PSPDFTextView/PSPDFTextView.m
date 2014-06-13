@@ -28,11 +28,20 @@
 
 - (id)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer {
     if (self = [super initWithFrame:frame textContainer:textContainer]) {
-        if (PSPDFRequiresTextViewWorkarounds()) {
-            [super setDelegate:self];
-        }
+        [self customInit];
     }
     return self;
+}
+
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    [self customInit];
+}
+
+- (void)customInit{
+    if (PSPDFRequiresTextViewWorkarounds()) {
+        [super setDelegate:self];
+    }
 }
 
 - (void)dealloc {
@@ -55,22 +64,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - UITextView
 
-- (void)setText:(NSString *)text
-{
+- (void)setText:(NSString *)text {
     _settingText = YES;
     [super setText:text];
     _settingText = NO;
 }
 
-- (void)setAttributedText:(NSAttributedString *)attributedText
-{
+- (void)setAttributedText:(NSAttributedString *)attributedText {
     _settingText = YES;
     [super setAttributedText:attributedText];
     _settingText = NO;
 }
 
-- (void)setSelectedRange:(NSRange)selectedRange
-{
+- (void)setSelectedRange:(NSRange)selectedRange {
     _settingSelection = YES;
     [super setSelectedRange:selectedRange];
     _settingSelection = NO;
@@ -82,14 +88,18 @@
 - (void)scrollRectToVisibleConsideringInsets:(CGRect)rect animated:(BOOL)animated {
     if (PSPDFRequiresTextViewWorkarounds()) {
         // Don't scroll if rect is currently visible.
-        CGRect visibleRect = UIEdgeInsetsInsetRect(self.bounds, self.contentInset);
+        UIEdgeInsets insets = UIEdgeInsetsMake(self.contentInset.top + self.textContainerInset.top,
+                                               self.contentInset.left + self.textContainerInset.left,
+                                               self.contentInset.bottom + self.textContainerInset.bottom,
+                                               self.contentInset.right + self.textContainerInset.right);
+        CGRect visibleRect = UIEdgeInsetsInsetRect(self.bounds, insets);
         if (!CGRectContainsRect(visibleRect, rect)) {
             // Calculate new content offset.
             CGPoint contentOffset = self.contentOffset;
             if (CGRectGetMinY(rect) < CGRectGetMinY(visibleRect)) { // scroll up
-                contentOffset.y = CGRectGetMinY(rect) - self.contentInset.top;
+                contentOffset.y = CGRectGetMinY(rect) - insets.top;
             }else { // scroll down
-                contentOffset.y = CGRectGetMaxY(rect) + self.contentInset.bottom - CGRectGetHeight(self.bounds);
+                contentOffset.y = CGRectGetMaxY(rect) + insets.bottom - CGRectGetHeight(self.bounds);
             }
             [self setContentOffset:contentOffset animated:animated];
         }
@@ -183,10 +193,6 @@
 
 - (BOOL)respondsToSelector:(SEL)s {
     return [super respondsToSelector:s] || [self.realDelegate respondsToSelector:s];
-}
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)s {
-    return [super methodSignatureForSelector:s] ?: [(id)self.realDelegate methodSignatureForSelector:s];
 }
 
 - (id)forwardingTargetForSelector:(SEL)s {
