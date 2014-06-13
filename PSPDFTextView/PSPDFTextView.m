@@ -144,7 +144,11 @@
 }
 
 - (void)scrollToVisibleCaretAnimated:(BOOL)animated {
-    [self scrollRectToVisibleConsideringInsets:[self caretRectForPosition:self.selectedTextRange.end] animated:animated];
+    const CGRect caretRect = [self caretRectForPosition:self.selectedTextRange.end];
+    // The caret is sometimes off by a pixel. When this happens, scrolling to its rect produces a little bounce.
+    // To avoid this, we scroll to its center instead.
+    const CGRect caretCenterRect = CGRectMake(CGRectGetMidX(caretRect), CGRectGetMidY(caretRect), 0, 0);
+    [self scrollRectToVisibleConsideringInsets:caretCenterRect animated:animated];
 }
 
 - (void)scrollToVisibleCaret {
