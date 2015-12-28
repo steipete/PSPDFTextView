@@ -97,7 +97,7 @@
             // Calculate new content offset.
             CGPoint contentOffset = self.contentOffset;
             if (CGRectGetMinY(rect) < CGRectGetMinY(visibleRect)) { // scroll up
-                contentOffset.y = CGRectGetMinY(rect) - insets.top;
+                contentOffset.y = MAX(CGRectGetMinY(rect) - insets.top, 0);
             }else { // scroll down
                 contentOffset.y = CGRectGetMaxY(rect) + insets.bottom - CGRectGetHeight(self.bounds);
             }
@@ -144,11 +144,12 @@
 }
 
 - (void)scrollToVisibleCaretAnimated:(BOOL)animated {
-    const CGRect caretRect = [self caretRectForPosition:self.selectedTextRange.end];
-    // The caret is sometimes off by a pixel. When this happens, scrolling to its rect produces a little bounce.
-    // To avoid this, we scroll to its center instead.
-    const CGRect caretCenterRect = CGRectMake(CGRectGetMidX(caretRect), CGRectGetMidY(caretRect), 0, 0);
-    [self scrollRectToVisibleConsideringInsets:caretCenterRect animated:animated];
+    UITextPosition *selectedTextRangeEnd = self.selectedTextRange.end;
+    CGRect rect = [self caretRectForPosition:selectedTextRangeEnd];
+    UITextPosition *givenCaretPosition = [self closestPositionToPoint:CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect))];
+    if ([self comparePosition:givenCaretPosition toPosition:selectedTextRangeEnd] == NSOrderedSame) {
+        [self scrollRectToVisibleConsideringInsets:rect animated:animated];
+    }
 }
 
 - (void)scrollToVisibleCaret {
